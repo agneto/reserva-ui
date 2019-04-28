@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="p-grid">
+    <div class="p-col-12">
+      <h1>Reservas</h1>
+    </div>
+
+    <div class="p-col-12">
+      <label style="display: block" for="vencimento">Intervalo de reservas</label>
+      <input type="text" pInputText id="inicio" name="inicio" style="width: 95px">
+
+      <label for="ate">até</label>
+      <input type="text" pInputText id="fim" name="fim" style="width: 95px">
+    </div>
+
+    <div class="p-col-12">
+      <button pButton type="submit" label="Pesquisar"></button>
+    </div>
+  </div>
+
+  <div class="p-grid">
+    <div class="p-col-12">
+        <app-reservas-grid [reservas]="reservas"></app-reservas-grid>
+    </div>
+    <div class="p-col-12">
+      <a pButton label="Nova Reserva"></a>
+    </div>
+  </div>
+</div>
