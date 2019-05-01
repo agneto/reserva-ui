@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ReservaService } from './../reserva.service';
 
 @Component({
   selector: 'app-reservas-pesquisa',
@@ -20,9 +21,14 @@ export class ReservasPesquisaComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private reservaService: ReservaService) { }
 
   ngOnInit() {
+    this.pesquisar();
+  }
+
+  pesquisar() {
+    console.log(this.reservaService.pesquisar());
   }
 
 }

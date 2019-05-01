@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { ButtonModule } from 'primeng/components/button/button';
@@ -13,6 +14,7 @@ import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 
 import { ReservasPesquisaComponent } from './reservas-pesquisa/reservas-pesquisa.component';
 import { ReservasGridComponent } from './reservas-grid/reservas-grid.component';
+import { ReservaService } from './reserva.service';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { ReservasGridComponent } from './reservas-grid/reservas-grid.component';
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
 
     SelectButtonModule,
     DropdownModule,
@@ -32,6 +35,7 @@ import { ReservasGridComponent } from './reservas-grid/reservas-grid.component';
     InputTextareaModule,
     CalendarModule,
   ],
+  providers: [ReservaService],
   exports: [
     ReservasPesquisaComponent
   ]
