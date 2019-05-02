@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReservaService, ReservaFiltro } from './../reserva.service';
 
+// import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { LazyLoadEvent, ConfirmationService } from 'primeng/components/common/api';
+// import { LazyLoadEvent, ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/components/common/messageservice';
+import { ErrorHandlerService } from './../../core/error-handler.service';
 
 import * as moment from 'moment';
 
@@ -27,6 +30,7 @@ export class ReservasPesquisaComponent implements OnInit {
 
   constructor(
     private reservaService: ReservaService,
+    private errorHandlerService: ErrorHandlerService,
     private messageService: MessageService,
     private confirmation: ConfirmationService
   ) { }
@@ -45,7 +49,7 @@ export class ReservasPesquisaComponent implements OnInit {
         this.reservas = resultado.reservas;
 
       })
-      .catch(erro => console.log(erro.error.message));
+      .catch(erro => this.errorHandlerService.handle(erro));
   }
 
   adicionar() {
@@ -55,18 +59,15 @@ export class ReservasPesquisaComponent implements OnInit {
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
-    console.log('aoMudarPagina');
-    console.log(event);
     const pagina = event.first / event.rows;
     this.pesquisar(pagina);
   }
 
   confirmarExclusao(reserva: any) {
     console.log('confirmar exclusão');
+    console.log(this.confirmation);
     this.confirmation.confirm({
       message: 'Tem certeza que deseja excluir?',
-      header: 'Confirmation',
-      icon: 'fa fa-question-circle',
       accept: () => {
         this.excluir(reserva);
       },
@@ -77,7 +78,7 @@ export class ReservasPesquisaComponent implements OnInit {
   }
 
   excluir(reserva: any) {
-    this.reservaService.excluir(reserva.codigo)
+    this.reservaService.excluir(reserva.id)
       .then(() => {
         if (this.grid.first === 0) {
           this.pesquisar();
@@ -87,7 +88,6 @@ export class ReservasPesquisaComponent implements OnInit {
 
         this.messageService.add({ severity: 'success', detail: 'Reserva excluído com sucesso!' });
       })
-      .catch(erro => console.log(erro.error.message));
+      .catch(erro => this.errorHandlerService.handle(erro));
   }
-
 }
