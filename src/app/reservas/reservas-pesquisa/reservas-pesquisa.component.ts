@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ReservaService } from './../reserva.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ReservaService, ReservaFiltro } from './../reserva.service';
+
+import { LazyLoadEvent, ConfirmationService } from 'primeng/components/common/api';
+import { MessageService } from 'primeng/components/common/messageservice';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reservas-pesquisa',
@@ -8,27 +13,81 @@ import { ReservaService } from './../reserva.service';
 })
 export class ReservasPesquisaComponent implements OnInit {
 
-  reservas = [
-    { filial: {id: 1, nome: 'Filial 1'}, sala: {id: 1, nome: 'Sala 1'},
-      inicio: new Date(2019, 5, 8, 8, 0), fim: new Date(2019, 5, 8, 9, 0),
-      responsavel: 'Shayenne Andrade', cafe: false, quantidadePessoa: 0,
-      descricao: 'Teste back-end'
-    },
-    { filial: {id: 1, nome: 'Filial 1'}, sala: {id: 1, nome: 'Sala 1'},
-      inicio: new Date(2019, 5, 8, 14, 0), fim: new Date(2019, 5, 8, 15, 30),
-      responsavel: 'Talita Mel', cafe: false, quantidadePessoa: 0,
-      descricao: 'Teste back-end 2'
-    }
-  ];
+  filtro = new ReservaFiltro();
+  reservas = [];
 
-  constructor(private reservaService: ReservaService) { }
+  reserva = { filial: {id: 2, nome: 'Filial 2'}, sala: {id: 2, nome: 'Sala 2'},
+    inicio: moment(new Date(2019, 6, 9, 14, 0)).format('YYYY-MM-DD HH:mm'),
+    fim: moment(new Date(2019, 6, 9, 15, 30)).format('YYYY-MM-DD HH:mm'),
+    responsavel: 'Talita Mel', cafe: false, quantidadePessoa: 0,
+    descricao: 'Teste back-end 3'};
+
+  totalRegistros = 0;
+  @ViewChild('tabela') grid;
+
+  constructor(
+    private reservaService: ReservaService,
+    private messageService: MessageService,
+    private confirmation: ConfirmationService
+  ) { }
 
   ngOnInit() {
-    this.pesquisar();
+    // this.adicionar();
   }
 
-  pesquisar() {
-    console.log(this.reservaService.pesquisar());
+  pesquisar(pagina = 0) {
+    this.filtro.pagina = pagina;
+
+    this.reservaService.pesquisar(this.filtro)
+      .then(resultado => {
+        console.log(resultado);
+        this.totalRegistros = resultado.total;
+        this.reservas = resultado.reservas;
+
+      })
+      .catch(erro => console.log(erro.error.message));
+  }
+
+  adicionar() {
+    this.reservaService.adicionar(this.reserva)
+    .then(() => this.pesquisar() )
+    .catch(erro => console.log(erro.error.message));
+  }
+
+  aoMudarPagina(event: LazyLoadEvent) {
+    console.log('aoMudarPagina');
+    console.log(event);
+    const pagina = event.first / event.rows;
+    this.pesquisar(pagina);
+  }
+
+  confirmarExclusao(reserva: any) {
+    console.log('confirmar exclusão');
+    this.confirmation.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      header: 'Confirmation',
+      icon: 'fa fa-question-circle',
+      accept: () => {
+        this.excluir(reserva);
+      },
+      reject: () => {
+        console.log('Test');
+      }
+    });
+  }
+
+  excluir(reserva: any) {
+    this.reservaService.excluir(reserva.codigo)
+      .then(() => {
+        if (this.grid.first === 0) {
+          this.pesquisar();
+        } else {
+          this.grid.first = 0;
+        }
+
+        this.messageService.add({ severity: 'success', detail: 'Reserva excluído com sucesso!' });
+      })
+      .catch(erro => console.log(erro.error.message));
   }
 
 }

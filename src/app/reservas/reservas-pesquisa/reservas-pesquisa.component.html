@@ -1,28 +1,83 @@
 <div class="container">
-  <div class="p-grid">
-    <div class="p-col-12">
-      <h1>Reservas</h1>
-    </div>
+  <div class="ui-g">
+    
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
 
-    <div class="p-col-12">
-      <label style="display: block" for="vencimento">Intervalo de reservas</label>
-      <input type="text" pInputText id="inicio" name="inicio" style="width: 95px">
+      <div class="ui-g-12">
+        <h1>Reservas</h1>
+      </div>
 
-      <label for="ate">até</label>
-      <input type="text" pInputText id="fim" name="fim" style="width: 95px">
-    </div>
+      <div class="ui-g-12">
+        <label style="display: block" for="inicio">Intervalo de reservas</label>
+        <p-calendar name="inicio" dateFormat="dd/mm/yy" showTime="true" hourFormat="24" 
+          [inputStyle]="{ width: '130px' }" [(ngModel)]="filtro.inicio"></p-calendar>
 
-    <div class="p-col-12">
-      <button pButton type="submit" label="Pesquisar"></button>
-    </div>
+        <label for="fim">até</label>
+        <p-calendar name="fim" dateFormat="dd/mm/yy" showTime="true" hourFormat="24" 
+          [inputStyle]="{ width: '130px' }" [(ngModel)]="filtro.fim"></p-calendar>
+      </div>
+      <br/>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+    </form>
   </div>
 
-  <div class="p-grid">
-    <div class="p-col-12">
-        <app-reservas-grid [reservas]="reservas"></app-reservas-grid>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-table [value]="reservas" [responsive]="true"
+        [paginator]="true" [rows]="filtro.itensPorPagina" 
+        [lazy]="true" [totalRecords]="totalRegistros"
+        (onLazyLoad)="aoMudarPagina($event)"
+        #tabela>
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Filial</th>
+              <th>Sala</th>
+              <th class="col-data-header">Inicio</th>
+              <th class="col-data-header">Fim</th>
+              <th class="col-data-header">Responsável</th>
+              <th class="col-data-header">Café</th>
+              <th class="col-data-header">Qtd Pessoas</th>
+              <th class="col-data-header">Descrição</th>
+              <th class="col-acoes-header"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reserva>
+            <tr>
+              <td>{{ reserva.filial.nome }}</td>
+              <td>{{ reserva.sala.nome }}</td>
+              <td class="col-data">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td class="col-data">{{ reserva.fim | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td class="col-data">{{ reserva.responsavel }}</td>
+              <td class="col-data">{{ reserva.cafe }}</td>
+              <td class="col-data">{{ reserva.quantidadePessoa }}</td>
+              <td class="col-data">{{ reserva.descricao }}</td>
+              <td class="col-acoes">
+                <button pButton icon="fa fa-pencil" pTooltip="Editar"
+                  tooltipPosition="top"></button>
+
+                <button pButton icon="fa fa-trash" pTooltip="Excluir" 
+                  tooltipPosition="top"
+                  (click)="confirmarExclusao(reserva)"></button>
+              </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">
+              Nenhuma reserva encontrada!
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
     </div>
-    <div class="p-col-12">
+    <div class="ui-g-12">
       <a pButton label="Nova Reserva"></a>
     </div>
   </div>
+
 </div>

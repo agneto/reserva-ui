@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { ButtonModule } from 'primeng/components/button/button';
 import { TableModule } from 'primeng/components/table/table';
@@ -15,6 +17,8 @@ import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { ReservasPesquisaComponent } from './reservas-pesquisa/reservas-pesquisa.component';
 import { ReservasGridComponent } from './reservas-grid/reservas-grid.component';
 import { ReservaService } from './reserva.service';
+
+
 
 @NgModule({
   declarations: [
@@ -35,7 +39,7 @@ import { ReservaService } from './reserva.service';
     InputTextareaModule,
     CalendarModule,
   ],
-  providers: [ReservaService],
+  providers: [ReservaService, ConfirmationService, MessageService],
   exports: [
     ReservasPesquisaComponent
   ]
