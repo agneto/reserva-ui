@@ -6,7 +6,8 @@ import { ReservaCadastroComponent } from './reservas/reserva-cadastro/reserva-ca
 
 const routes: Routes = [
   { path: 'reservas', component: ReservasPesquisaComponent },
-  { path: 'reservas/novo', component: ReservaCadastroComponent }
+  { path: 'reservas/novo', component: ReservaCadastroComponent },
+  { path: 'reservas/:id', component: ReservaCadastroComponent }
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MessageService } from 'primeng/components/common/messageservice';
 
@@ -31,17 +32,55 @@ export class ReservaCadastroComponent implements OnInit {
     private reservaService: ReservaService,
     private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    const idReserva = this.route.snapshot.params.id;
+    if (idReserva) {
+      this.carregarReserva(idReserva);
+    }
   }
 
   salvar(form: FormControl) {
+    if (this.editando) {
+      this.atualizarReserva(form);
+    } else {
+      this.adicionarReserva(form);
+    }
+  }
+
+  adicionarReserva(form: FormControl) {
     this.reservaService.salvar(this.reserva)
      .then(reservaAdicionado => {
-      this.messageService.add({ severity: 'success', detail: 'Reserva adicionado com sucesso!' });
+        this.messageService.add({ severity: 'success', detail: 'Reserva adicionado com sucesso!' });
+        form.reset();
+        this.reserva = new Reserva();
      })
      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  atualizarReserva(form: FormControl) {
+    this.reservaService.atualizar(this.reserva)
+     .then(reservaAdicionado => {
+        this.messageService.add({ severity: 'success', detail: 'Reserva Alterado com sucesso!' });
+        form.reset();
+        this.reserva = new Reserva();
+     })
+     .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  carregarReserva(id: number) {
+    this.reservaService.buscarPorCodigo(id)
+      .then(reserva => {
+        this.reserva = reserva;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  get editando() {
+    return Boolean(this.reserva.id);
   }
 
 }

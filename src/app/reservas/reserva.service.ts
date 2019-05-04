@@ -52,20 +52,45 @@ export class ReservaService {
   }
 
   salvar(reserva: Reserva): Promise<Reserva> {
-//    const httpOptions = {
-//      headers: new HttpHeaders({
-//        'Content-Type':  'application/json'
-//      })
-//    };
-
     return this.http.post<Reserva>(this.reservaUrl, reserva)
       .toPromise();
   }
 
-  excluir(codigo: number): Promise<void> {
-    return this.http.delete(`${this.reservaUrl}/${codigo}`)
+  atualizar(reserva: Reserva): Promise<Reserva> {
+    return this.http.put<Reserva>(`${this.reservaUrl}/${reserva.id}`, reserva)
+      .toPromise()
+      .then(response => {
+        const reservaAlterado = response;
+
+        this.converterStringsParaDatas([reservaAlterado]);
+
+        return reservaAlterado;
+      });
+  }
+
+  excluir(id: number): Promise<void> {
+    return this.http.delete(`${this.reservaUrl}/${id}`)
       .toPromise()
       .then(() => null);
+  }
+
+  public buscarPorCodigo(id: number): Promise<Reserva> {
+    return this.http.get<Reserva>(`${this.reservaUrl}/${id}`)
+      .toPromise()
+      .then(response => {
+        const reserva = response;
+
+        this.converterStringsParaDatas([reserva]);
+
+        return reserva;
+      });
+  }
+
+  private converterStringsParaDatas(reservas: Reserva[]) {
+    for (const reserva of reservas) {
+      reserva.inicio = moment(reserva.inicio, 'YYYY-MM-DD HH:mm').toDate();
+      reserva.fim = moment(reserva.fim, 'YYYY-MM-DD HH:mm').toDate();
+    }
   }
 
 }
