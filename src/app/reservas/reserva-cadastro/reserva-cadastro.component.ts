@@ -37,14 +37,11 @@ export class ReservaCadastroComponent implements OnInit {
   }
 
   salvar(form: FormControl) {
-    console.log(this.reserva);
-    console.log(JSON.stringify(this.reserva));
-    // this.reservaService.salvar(this.reserva)
-    // .then(reservaAdicionado => {
-    //  this.messageService.add({ severity: 'success', detail: 'Reserva adicionado com sucesso!' });
-    // })
-    // .catch(erro => this.errorHandler.handle(erro));
-
+    this.reservaService.salvar(this.reserva)
+     .then(reservaAdicionado => {
+      this.messageService.add({ severity: 'success', detail: 'Reserva adicionado com sucesso!' });
+     })
+     .catch(erro => this.errorHandler.handle(erro));
   }
 
 }

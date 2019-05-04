@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/components/common/messageservice';
@@ -21,8 +22,6 @@ import { ReservasGridComponent } from './reservas-grid/reservas-grid.component';
 import { ReservaService } from './reserva.service';
 import { ReservaCadastroComponent } from './reserva-cadastro/reserva-cadastro.component';
 
-
-
 @NgModule({
   declarations: [
     ReservasPesquisaComponent,
@@ -33,6 +32,7 @@ import { ReservaCadastroComponent } from './reserva-cadastro/reserva-cadastro.co
     CommonModule,
     FormsModule,
     HttpClientModule,
+    RouterModule,
 
     SelectButtonModule,
     DropdownModule,
