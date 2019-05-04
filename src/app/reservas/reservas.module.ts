@@ -12,18 +12,22 @@ import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { InputTextareaModule } from 'primeng/components/inputtextarea/inputtextarea';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { SelectButtonModule } from 'primeng/components/selectbutton/selectbutton';
-import { DropdownModule } from 'primeng/components/dropdown/dropdown';
+// import { DropdownModule } from 'primeng/components/dropdown/dropdown';
+import { DropdownModule } from 'primeng/dropdown';
+import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 
 import { ReservasPesquisaComponent } from './reservas-pesquisa/reservas-pesquisa.component';
 import { ReservasGridComponent } from './reservas-grid/reservas-grid.component';
 import { ReservaService } from './reserva.service';
+import { ReservaCadastroComponent } from './reserva-cadastro/reserva-cadastro.component';
 
 
 
 @NgModule({
   declarations: [
     ReservasPesquisaComponent,
-    ReservasGridComponent
+    ReservasGridComponent,
+    ReservaCadastroComponent
   ],
   imports: [
     CommonModule,
@@ -32,6 +36,7 @@ import { ReservaService } from './reserva.service';
 
     SelectButtonModule,
     DropdownModule,
+    TriStateCheckboxModule,
     InputTextModule,
     ButtonModule,
     TableModule,
@@ -41,7 +46,8 @@ import { ReservaService } from './reserva.service';
   ],
   providers: [ReservaService, ConfirmationService, MessageService],
   exports: [
-    ReservasPesquisaComponent
+    ReservasPesquisaComponent,
+    ReservaCadastroComponent
   ]
 })
 export class ReservasModule { }

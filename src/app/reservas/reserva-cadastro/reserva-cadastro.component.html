@@ -1,0 +1,71 @@
+<div class="container">
+  <form autocomplete="off" #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1>Nova Reserva</h1>
+      </div>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Filial</label>
+      <p-dropdown name="filial" [options]="filiais"
+        placeholder="Selecione" [autoWidth]="false" [filter]="true"
+        [(ngModel)]="reserva.filial.id">
+      </p-dropdown>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Sala</label>
+      <p-dropdown name="sala" [options]="salas"
+        placeholder="Selecione" [autoWidth]="false" [filter]="true"
+        [(ngModel)]="reserva.sala.id">
+      </p-dropdown>
+    </div>
+
+    <div class="ui-g-12 ui-md-12 ui-fluid">
+      <label>Responsável</label>
+      <input id="responsavel" pInputText type="text" name="responsavel"
+       #responsavel="ngModel" minlength="5" [(ngModel)]="reserva.responsavel">
+    </div>
+
+    <div class="ui-g-6 ui-md-3 ui-fluid">
+      <label>Inicio</label>
+      <p-calendar id="inicio" name="inicio" dateFormat="dd/mm/yy" showTime="true" hourFormat="24"
+        [inline]="false" [readonlyInput]="false" [showIcon]="true"
+        ngModel #inicio="ngModel" [(ngModel)]="reserva.inicio" required>
+      </p-calendar>
+    </div>
+
+    <div class="ui-g-6 ui-md-3 ui-fluid">
+      <label>Fim</label>
+      <p-calendar id="fim" name="fim" dateFormat="dd/mm/yy" showTime="true" hourFormat="24"
+        [inline]="false" [readonlyInput]="false" [showIcon]="true"
+        ngModel #fim="ngModel" [(ngModel)]="reserva.fim" required>
+      </p-calendar>
+    </div>
+
+    <div class="ui-g-6 ui-md-1">
+      <br/>
+      <p-triStateCheckbox id="cafe" name="cafe" [(ngModel)]="reserva.cafe" label="Café"></p-triStateCheckbox>
+    </div>
+
+    <div class="ui-g-6 ui-md-5 ui-fluid">
+      <label>Quantidade</label>
+      <input id="quantidadePessoa" pInputText type="text" name="quantidadePessoa"
+      ngModel #quantidadePessoa="ngModel" [(ngModel)]="reserva.quantidadePessoa">
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Descrição</label>
+      <textarea pInputTextarea rows="3"name="descricao" 
+      #descricao="ngModel" [(ngModel)]="reserva.descricao"></textarea>
+    </div>
+
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+      <button pButton type="button" label="Novo" class="ui-button-info"></button>
+      <a href="javascript:;">Voltar para a pesquisa</a>
+    </div>
+
+  </form>
+</div>  

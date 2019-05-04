@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReservaService, ReservaFiltro } from './../reserva.service';
 
 // import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { LazyLoadEvent, ConfirmationService } from 'primeng/components/common/api';
-// import { LazyLoadEvent, ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/components/common/messageservice';
+
+import { ReservaService, ReservaFiltro } from './../reserva.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 
 import * as moment from 'moment';
@@ -44,16 +44,14 @@ export class ReservasPesquisaComponent implements OnInit {
 
     this.reservaService.pesquisar(this.filtro)
       .then(resultado => {
-        console.log(resultado);
         this.totalRegistros = resultado.total;
         this.reservas = resultado.reservas;
-
       })
       .catch(erro => this.errorHandlerService.handle(erro));
   }
 
   adicionar() {
-    this.reservaService.adicionar(this.reserva)
+    this.reservaService.salvar(null) // passar uma reserva
     .then(() => this.pesquisar() )
     .catch(erro => console.log(erro.error.message));
   }
@@ -64,8 +62,6 @@ export class ReservasPesquisaComponent implements OnInit {
   }
 
   confirmarExclusao(reserva: any) {
-    console.log('confirmar exclusão');
-    console.log(this.confirmation);
     this.confirmation.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
