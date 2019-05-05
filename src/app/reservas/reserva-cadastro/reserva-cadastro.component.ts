@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,12 +34,16 @@ export class ReservaCadastroComponent implements OnInit {
     private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private title: Title
   ) { }
 
   ngOnInit() {
+    this.title.setTitle('Nova reserva');
+
     const idReserva = this.route.snapshot.params.id;
-    if (idReserva) {
+    const regex = new RegExp(/[0-9]/, 'g');
+    if (idReserva && idReserva.match(regex)) {
       this.carregarReserva(idReserva);
     }
   }
@@ -55,8 +60,9 @@ export class ReservaCadastroComponent implements OnInit {
     this.reservaService.salvar(this.reserva)
      .then(reservaAdicionado => {
         this.messageService.add({ severity: 'success', detail: 'Reserva adicionado com sucesso!' });
-        form.reset();
-        this.reserva = new Reserva();
+        // form.reset();
+        // this.reserva = new Reserva();
+        this.router.navigate(['/reservas', reservaAdicionado.id]);
      })
      .catch(erro => this.errorHandler.handle(erro));
   }
@@ -67,6 +73,7 @@ export class ReservaCadastroComponent implements OnInit {
         this.messageService.add({ severity: 'success', detail: 'Reserva Alterado com sucesso!' });
         form.reset();
         this.reserva = new Reserva();
+        this.atualizarTituloEdicao();
      })
      .catch(erro => this.errorHandler.handle(erro));
   }
@@ -75,12 +82,27 @@ export class ReservaCadastroComponent implements OnInit {
     this.reservaService.buscarPorCodigo(id)
       .then(reserva => {
         this.reserva = reserva;
+        this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));
   }
 
   get editando() {
     return Boolean(this.reserva.id);
+  }
+
+  novo(form: FormControl) {
+    form.reset();
+
+    setTimeout(function() {
+      this.reserva = new Reserva();
+    }.bind(this), 1);
+
+    this.router.navigate(['/reservas/novo']);
+  }
+
+  atualizarTituloEdicao() {
+    this.title.setTitle(`Edição de reserva do(a): ${this.reserva.responsavel}`);
   }
 
 }

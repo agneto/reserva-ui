@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { LazyLoadEvent, ConfirmationService } from 'primeng/components/common/api';
@@ -5,6 +6,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
 
 import { ReservaService, ReservaFiltro } from './../reserva.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
+import { Reserva } from './../../core/models';
 
 @Component({
   selector: 'app-reservas-pesquisa',
@@ -22,10 +24,12 @@ export class ReservasPesquisaComponent implements OnInit {
     private reservaService: ReservaService,
     private errorHandlerService: ErrorHandlerService,
     private messageService: MessageService,
-    private confirmation: ConfirmationService
+    private confirmation: ConfirmationService,
+    private title: Title
   ) { }
 
   ngOnInit() {
+    this.title.setTitle('Pesquisa de Reservas');
   }
 
   pesquisar(pagina = 0) {
@@ -44,7 +48,7 @@ export class ReservasPesquisaComponent implements OnInit {
     this.pesquisar(pagina);
   }
 
-  confirmarExclusao(reserva: any) {
+  confirmarExclusao(reserva: Reserva) {
     this.confirmation.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
@@ -56,7 +60,7 @@ export class ReservasPesquisaComponent implements OnInit {
     });
   }
 
-  excluir(reserva: any) {
+  excluir(reserva: Reserva) {
     this.reservaService.excluir(reserva.id)
       .then(() => {
         if (this.grid.first === 0) {

@@ -13,12 +13,14 @@ import { GrowlModule } from 'primeng/growl';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReservaService } from './../reservas/reserva.service';
 import { ErrorHandlerService } from './error-handler.service';
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 
 registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
-    NavbarComponent
+    NavbarComponent,
+    PaginaNaoEncontradaComponent
   ],
   imports: [
     CommonModule,

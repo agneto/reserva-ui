@@ -46,8 +46,8 @@ import { ReservaCadastroComponent } from './reserva-cadastro/reserva-cadastro.co
   ],
   providers: [ReservaService, ConfirmationService, MessageService],
   exports: [
-    ReservasPesquisaComponent,
-    ReservaCadastroComponent
+    // ReservasPesquisaComponent,
+    // ReservaCadastroComponent
   ]
 })
 export class ReservasModule { }
